@@ -1,0 +1,23 @@
+.rank-button {
+    background-color: #ffffff;
+    border: 1px solid #000000;
+    color: #666666;
+    flex-direction: row;
+    display: flex;
+    align-items: center;
+    height: 36px;
+    width:112px;
+    border-radius: 8ox;    
+    /* line-height: 48px;
+    padding: 28px 30px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: 'Bungee Spice';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 100%;
+    border-radius: 8px;
+     */
+  }
+  
