@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import styled from "styled-components";
-
+import crypto from "crypto-js";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import StatusRow from "../StatusRow";
 import LoseGame from "../LoseGame";
 import WinGame from "../WinGame";
-import PrimaryButton from "../../Common/Buttons/PrimaryButton";
-import RecentScore from "../../Home/RecentScore";
 import Color from "color";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import moreIcon from "/images/more.svg";
 import plusIcon from "/images/plus.svg";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowAltCircleLeft } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import { apiCaller } from "../../../utils/fetcher";
 import {
   WalletConnectButton,
@@ -22,7 +20,9 @@ import {
   useWallet,
   useQueryClient,
   useSigningClient,
+  setSkillLevel,
 } from "@sei-js/react";
+import { toast } from "react-toastify";
 
 const progressbarStyles = {
   path: {
@@ -295,19 +295,29 @@ const Stage = ({
   const [pixelSize, setPixelSize] = useState(30);
   const [flag, setFlag] = useState(0);
   const [show, setShow] = useState(false);
+  const [quest, setQuest] = useState(false);
   const [portrait, setPortrait] = useState(false);
   const { width, height } = useWindowDimensions();
   const [theme3d, setTheme3d] = useState(false);
   const [nextRender, setNextRender] = useState();
   const stageRef = useRef(null);
-
+  const navigate = useNavigate();
+  const { skillLevel } = useSelector((state) => ({
+    skillLevel: state.tetris.skillLevel,
+  }));
   const { supportedWallets, connect, disconnect, installedWallets } =
     useContext(SeiWalletContext);
   const { connectedWallet, offlineSigner, accounts } = useWallet();
+  const { beatScore } = useSelector((state) => ({
+    beatScore: state.tetris.beatScore,
+  }));
 
   // Orientation
   useEffect(() => {
     const setLandscape = () => {
+      if (!beatScore) {
+        navigate("/");
+      }
       if (window.innerHeight > window.innerWidth) {
         document.documentElement.style.transform = "rotate(90deg)";
         document.documentElement.style.transformOrigin = "top left";
@@ -318,6 +328,7 @@ const Stage = ({
         document.documentElement.style.left = "0";
       }
     };
+
     // console.log(width);
 
     setLandscape();
@@ -331,23 +342,46 @@ const Stage = ({
   // +++++++++
 
   useEffect(() => {
-    // console.log(
-    //   "lose",
-    //   lose,
-    //   status.score,
-    //   Number(localStorage.getItem("beatScore")),
-    //   status.score < Number(localStorage.getItem("beatScore"))
-    // );
     if (lose && accounts && accounts.length) {
       const wallet = accounts[0].address;
+      const key = "my_secret_key_for_questify";
+      const json = JSON.stringify({
+        score: status.score,
+        result: status.score >= Number(beatScore),
+        level: skillLevel,
+        timestamp: new Date(),
+      });
+
+      const logCode = crypto.AES.encrypt(json, key).toString();
+      // const logCode = {
+      //   score: 4536,
+      //   winStatus: true,
+      //   level: 1,
+      //   timestamp: new Date(),
+      //   hours: 0.1,
+      // };
+
       apiCaller
         .post("tetrises/updateMyFlag", {
           wallet,
+          logCode,
         })
         .then((result) => {
-          // console.log("😉", result.data.existingUser);
-          setFlag(result.data.existingUser.totalPlay);
+          setFlag(result.data.existingUser.tetris.count);
           setShow(true);
+          console.log("", result.data.existingUser);
+          setQuest(
+            result.data.existingUser.tetris.allQuests.length ===
+              result.data.existingUser.tetris.receivedQuests.length &&
+              result.data.existingUser.tetris.allQuests.every(
+                (value, index) =>
+                  value ===
+                  result.data.existingUser.tetris.receivedQuests[index]
+              )
+              ? true
+              : false
+          );
+          console.log(quest);
         });
     }
   }, [lose]);
@@ -401,6 +435,7 @@ const Stage = ({
                 // padding={pixelSize / 2}
                 title="SCORE"
                 value={status.score.toLocaleString()}
+                // value={beatScore}
               />
 
               {/* Score To Beat */}
@@ -411,7 +446,8 @@ const Stage = ({
                 // margin={pixelSize / 3}
                 // padding={pixelSize / 2}
                 title="Score To Beat"
-                value={localStorage.getItem("beatScore").toLocaleString()}
+                // value={localStorage.getItem("beatScore").toLocaleString()}
+                value={beatScore.toLocaleString()}
               />
               {/* <div
                 style={{
@@ -568,33 +604,35 @@ const Stage = ({
 					styles="!px-[30px]"
 				/>
 			</div> */}
-      {lose &&
-        show &&
-        status.score >= Number(localStorage.getItem("beatScore")) && (
-          <WinGame
-            flag={flag}
-            portrait={portrait}
-            restartClick={restartClick}
-            status={status}
-            pixelSize={pixelSize}
-            theme3d={theme3d}
-            wallet={accounts[0].address}
-          ></WinGame>
-        )}
+      {lose && show && status.score >= Number(beatScore) && (
+        <WinGame
+          flag={flag}
+          portrait={portrait}
+          restartClick={restartClick}
+          status={status}
+          pixelSize={pixelSize}
+          theme3d={theme3d}
+          wallet={accounts[0].address}
+          isQuest={!quest}
+        ></WinGame>
+      )}
 
-      {lose &&
-        show &&
-        status.score < Number(localStorage.getItem("beatScore")) && (
-          <LoseGame
-            flag={flag}
-            portrait={portrait}
-            restartClick={restartClick}
-            status={status}
-            pixelSize={pixelSize}
-            theme3d={theme3d}
-            wallet={accounts[0].address}
-          ></LoseGame>
-        )}
+      {lose && show && Number(status.score) < Number(beatScore) && (
+        <LoseGame
+          flag={flag}
+          portrait={portrait}
+          restartClick={restartClick}
+          status={status}
+          pixelSize={pixelSize}
+          theme3d={theme3d}
+          wallet={accounts[0].address}
+          isQuest={!quest}
+        ></LoseGame>
+      )}
+
+      {/* {lose &&
+        Number(status.score) < Number({ beatScore }) &&
+        toast.info("hey!")} */}
     </div>
   );
 };

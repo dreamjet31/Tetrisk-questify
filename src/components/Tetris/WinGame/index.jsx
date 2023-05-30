@@ -8,6 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 import { apiCaller } from "../../../utils/fetcher";
 
+const isSmallDevice = window.matchMedia(
+  "(max-width: 600px) or (max-height:420px)"
+).matches;
+
 const CenterOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -42,7 +46,7 @@ const ContainerLose = styled.div`
   justify-content: center;
   align-items: center;
   width: 360px;
-  height: ${() => (isSmallDevice ? 240 : 400)}px;
+  height: ${() => (isSmallDevice ? 280 : 400)}px;
 `;
 
 console.log("win game");
@@ -55,6 +59,7 @@ const WinGame = ({
   theme3d,
   restartClick,
   wallet,
+  isQuest,
 }) => {
   const navigate = useNavigate();
   const { confLevel } = useSelector((state) => ({
@@ -114,7 +119,7 @@ const WinGame = ({
                     marginLeft: "140px",
                     fontWeight: "bold",
                   }
-                : { fontSize: "14px", marginTop: "-20px", fontWeight: "bold" }
+                : { fontSize: "14px", marginTop: "0px", fontWeight: "bold" }
             }
           >
             You Win
@@ -143,13 +148,21 @@ const WinGame = ({
           </div>
           <div
             className="yellow-button mt-3 mb-6 w-[120px]"
+            style={isSmallDevice ? { marginLeft: "140px" } : {}}
             onClick={() => quitGame()}
           >
             OK
           </div>
-          <div className="flex mt-3 mb-6 w-[300px]">
+          <div className="flex mt-3 mb-3 w-[300px]">
             <ProgressBar currentStep={flag} myfunc={resetMyFlag} />
           </div>
+          {isQuest && (
+            <div className="beautiful flex w-[300px] text-[16px] items-center justify-center">
+              <a href="https://app-questify.web.app/" target="_blank">
+                {" You achieved new quests! "}
+              </a>
+            </div>
+          )}
         </ContainerLose>
       </ContainerWrapper>
     </CenterOverlay>

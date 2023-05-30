@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import ProgressBar from "../Game/ProgressBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import { apiCaller } from "../../../utils/fetcher";
 
 const isSmallDevice = window.matchMedia(
@@ -45,7 +44,7 @@ const ContainerLose = styled.div`
   justify-content: center;
   align-items: center;
   width: 360px;
-  height: ${() => (isSmallDevice ? 240 : 400)}px;
+  height: ${() => (isSmallDevice ? 280 : 400)}px;
 `;
 
 // console.log("lose game");
@@ -58,6 +57,7 @@ const LoseGame = ({
   theme3d,
   restartClick,
   wallet,
+  isQuest,
 }) => {
   const navigate = useNavigate();
   const { confLevel } = useSelector((state) => ({
@@ -83,6 +83,8 @@ const LoseGame = ({
   useEffect(() => {
     // console.log(confLevel);
   }, [confLevel]);
+
+  console.log("🙌isQuests", isQuest);
 
   return (
     <CenterOverlay className="flex flex-col">
@@ -143,9 +145,16 @@ const LoseGame = ({
           >
             OK
           </div>
-          <div className="flex mt-3 mb-6 w-[300px]">
+          <div className="flex mt-3 mb-3 w-[300px]">
             <ProgressBar currentStep={flag} myfunc={resetMyFlag} />
           </div>
+          {isQuest && (
+            <div className="beautiful flex w-[300px] text-[16px] items-center justify-center">
+              <a href="https://app-questify.web.app/" target="_blank">
+                {" You achieved new quests! "}
+              </a>
+            </div>
+          )}
         </ContainerLose>
       </ContainerWrapper>
     </CenterOverlay>

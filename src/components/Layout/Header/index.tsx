@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { HeaderMenuTitles } from "../../../data";
 import { WalletWindowKey } from "@sei-js/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,15 +6,8 @@ import {
   setMyWalletAddress,
   setMyBalance,
 } from "../../../redux/slices/tetrisSlice";
-import styled from "styled-components";
 import { apiCaller } from "../../../utils/fetcher";
-import {
-  WalletConnectButton,
-  SeiWalletContext,
-  useWallet,
-  useQueryClient,
-  useSigningClient,
-} from "@sei-js/react";
+import { SeiWalletContext, useWallet } from "@sei-js/react";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,8 +15,6 @@ import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-
-import icon from "/images/Icon.svg";
 
 const modalStyle = {
   position: "absolute" as "absolute",
@@ -41,7 +31,8 @@ const modalStyle = {
 
 const Header = () => {
   const dispatch = useDispatch();
-  const { supportedWallets, connect, disconnect, installedWallets } = useContext(SeiWalletContext);
+  const { supportedWallets, connect, disconnect, installedWallets } =
+    useContext(SeiWalletContext);
   const { connectedWallet, offlineSigner, accounts } = useWallet();
 
   const [active, setActive] = useState(0);
@@ -64,7 +55,6 @@ const Header = () => {
       var result = await apiCaller.post("tetrises/getMyInfo", {
         wallet,
       });
-      // console.log("ssdfd", result.data.data.totalBalance);
       dispatch(setMyBalance({ balance: result.data.data.totalBalance }));
     }
   };
@@ -98,170 +88,129 @@ const Header = () => {
   // Dropdown
   const [isOpen, setIsOpen] = useState(false);
   const [betAmount, setBetAmount] = useState(0);
-  const toggling = () => setIsOpen(!isOpen);
 
-  const DropDownListContainer = styled("div")`
-    width: 150px;
-    margin-top: 20px;
-    margin-left: -12px;
-  `;
-
-  const DropDownList = styled("ul")`
-    background: white;
-    border: 1px solid black;
-    border-radius: 8px;
-    box-shadow: 0px 5px 0px black;
-    &:first-child {
-      padding-top: 0.8em;
-    }
-  `;
-
-  const ListItem = styled("li")`
-    list-style: none;
-    margin-bottom: 0.8em;
-    display: flex;
-    flex-direction: row;
-    padding-left: 10px;
-  `;
-
-  // Modals action
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [collapse, setCollapse] = React.useState(false);
 
-  const isSmallDevice = window.matchMedia('(max-width: 600px) or (max-height:420px)').matches;
-  // console.log("SmallDevice", isSmallDevice);
-
   return (
     <div className="fixed top-0 left-0 right-0 z-10">
-      {/* <ToastContainer
-        style={{ fontSize: "14px" }}
+      <ToastContainer
+        style={{ fontSize: "14px", zIndex: "1000" }}
         autoClose={2000}
         hideProgressBar={true}
-      /> */}
+      />
       <div className="flex">
         <div
           className="flex flex-row h-full
                       lg:justify-between md:justify-around sm:justify-between xs:justify-between"
         ></div>
       </div>
-<div className="flex flex-row justify-end">
-    {collapse && (
       <div className="flex flex-row justify-end">
-        { connectedWallet == ("keplr" as WalletWindowKey) && (
-          <div
-            className="wallet-adapter-button flex justify-end items-center my-[15px] "
-            onClick={() => { }}
-          >
-            <div className="flex flex-row">
-              <p>&nbsp;{(Math.floor(Number(balance) * 10000)) / 10000}</p>
-              <img
-                src="/images/logo2.png"
-                className="mx-[6px] w-[18px] h-[18px]"
-              ></img>
-            </div>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-            >
-              <Box sx={modalStyle}>
-                <Typography
-                  id="modal-modal-title"
-                  variant="h6"
-                  component="h2"
-                  sx={{ textAlign: "center" }}
-                >
-                  Deposite
-                </Typography>
-                <div className="flex flex-row mt-3">
-                  <TextField
-                    id="outlined-number"
-                    label="Deposite amount"
-                    type="number"
-                    size="small"
-                    value={betAmount}
-                    onChange={(e) => {
-                      try {
-                        setBetAmount(Number(e.target.value));
-                      } catch (err) {
-                        toast.warn("Input correct amount");
-                      }
-                    }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  <div className="wallet-adapter-button flex justify-end ml-3 bg-[#fcd23c]">
-                    Deposite
-                  </div>
+        {collapse && (
+          <div className="flex flex-row justify-end">
+            {connectedWallet == ("keplr" as WalletWindowKey) && (
+              <div
+                className="wallet-adapter-button flex justify-end items-center my-[15px] "
+                onClick={() => {}}
+              >
+                <div className="flex flex-row">
+                  <p>&nbsp;{Math.floor(Number(balance) * 10000) / 10000}</p>
+                  <img
+                    src="/images/logo2.png"
+                    className="mx-[6px] w-[18px] h-[18px]"
+                  ></img>
                 </div>
-              </Box>
-            </Modal>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={modalStyle}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                      sx={{ textAlign: "center" }}
+                    >
+                      Deposite
+                    </Typography>
+                    <div className="flex flex-row mt-3">
+                      <TextField
+                        id="outlined-number"
+                        label="Deposite amount"
+                        type="number"
+                        size="small"
+                        value={betAmount}
+                        onChange={(e) => {
+                          try {
+                            setBetAmount(Number(e.target.value));
+                          } catch (err) {
+                            toast.warn("Input correct amount");
+                          }
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <div className="wallet-adapter-button flex justify-end ml-3 bg-[#fcd23c]">
+                        Deposite
+                      </div>
+                    </div>
+                  </Box>
+                </Modal>
+              </div>
+            )}
+
+            <div className="wallet-adapter-button flex justify-end items-center my-[15px]  mx-[25px]">
+              {connectedWallet != ("keplr" as WalletWindowKey) ? (
+                <div
+                  className="flex flex-row"
+                  onClick={async () => {
+                    if (!window.keplr) {
+                      toast.warn("Please install keplr extension");
+                    } else {
+                      connect("keplr");
+                    }
+                  }}
+                >
+                  <img src="/images/SEI.svg"></img>
+                  <p>&nbsp;Connect Wallet</p>
+                </div>
+              ) : (
+                <div
+                  className="flex flex-row"
+                  onClick={() => {
+                    disconnect();
+                    dispatch(setConnectionState({ state: !connectionState }));
+                  }}
+                >
+                  <img src="/images/SEI.svg"></img>
+                  <p>
+                    &nbsp;{" "}
+                    {myWalletAddress.substring(0, 6) +
+                      "..." +
+                      myAddress.substring(myAddress.length - 3)}
+                  </p>
+                </div>
+              )}
+            </div>
           </div>
         )}
-        <div
-          className="wallet-adapter-button flex justify-end items-center my-[15px]  mx-[25px]"
-        >
-          {connectedWallet != ("keplr" as WalletWindowKey) ? (
-            <div
-              className="flex flex-row"
-              onClick={async () => {
-                if (!window.keplr) {
-                  toast.warn("Please install keplr extension");
-                } else {
-                  connect("keplr");
-                  // (window as any).keplr.enable('atlantic-2');
-                  // const address = await (window as any)
-                  //   .getOfflineSigner("atlantic-2")
-                  //   .getAccounts();
-                  // console.log(address[0].address);
-                  // setMyAddress(address[0].address);
-                  // dispatch(setConnectionState({ state: !connectionState }));
-                  // dispatch(setMyWalletAddress({ address: address[0].address }));
-                }
-              }}
-            >
-              <img src="/images/SEI.svg"></img>
-              <p>&nbsp;Connect Wallet</p>
-            </div>
-          ) : (
-            <div
-              className="flex flex-row"
-              onClick={() => {
-                disconnect();
-                dispatch(setConnectionState({ state: !connectionState }));
-              }}
-            >
-              <img src="/images/SEI.svg"></img>
-              <p>
-                &nbsp;{" "}
-                {myWalletAddress.substring(0, 6) +
-                  "..." +
-                  myAddress.substring(myAddress.length - 3)}
-              </p>
-            </div>
-          )}
-        </div>
-  </div>
-  
-    )}
 
-    {  (
-      <div className="flex justify-end">
-        <div className="wallet-adapter-button flex justify-end  my-[15px]  mr-[25px]"
-          onClick={()=>setCollapse(!collapse)}
-        >
-          <img src="/public/images/threedots.png" className="w-[25px]" />
-        </div>
+        {
+          <div className="flex justify-end">
+            <div
+              className="wallet-adapter-button flex justify-end  my-[15px]  mr-[25px]"
+              onClick={() => setCollapse(!collapse)}
+            >
+              <img src="images/threeDots.png" className="w-[25px]" />
+            </div>
+          </div>
+        }
       </div>
-    )}
-    </div>
-       
-       
-  
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { minifyAddress } from "../../../utils";
-import avatar from "/images/avatar.svg"
+import avatar from "/images/avatar.svg";
 export interface LeaderBoardProps {
   simple: boolean;
   level: number;
@@ -23,17 +23,17 @@ function calculateInterval(updatedTime) {
   const diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
   // Format the result as a string
-  const beforeTime = `${diffDays === 0 ? "" : diffDays + "d,"} ${diffHours === 0 ? "" : diffHours + "h,"
-    }  ${diffMinutes === 0 ? "" : diffMinutes + "m,"}  ${diffSeconds === 0 ? "" : diffSeconds + "s"
-    } `;
+  const beforeTime = `${diffDays === 0 ? "" : diffDays + "d,"} ${
+    diffHours === 0 ? "" : diffHours + "h,"
+  }  ${diffMinutes === 0 ? "" : diffMinutes + "m,"}  ${
+    diffSeconds === 0 ? "" : diffSeconds + "s"
+  } `;
 
   return beforeTime;
 }
 
-
 const RecentScore = (props: LeaderBoardProps) => {
-
-  const isSmallDevice = window.matchMedia('(max-width: 600px)').matches;
+  const isSmallDevice = window.matchMedia("(max-width: 600px)").matches;
 
   const { winners } = useSelector((state: any) => ({
     winners: state.tetris.winners,
@@ -70,13 +70,10 @@ const RecentScore = (props: LeaderBoardProps) => {
     }
   }, [winners]);
 
-
-
   console.log("props.simple", props.simple);
   console.log(sortedWinners);
   // console.log(winners);
   return props.simple ? (
-
     <div className="rounded-md">
       <div className="grid grid-row ">
         {sortedWinners
@@ -92,9 +89,7 @@ const RecentScore = (props: LeaderBoardProps) => {
               <div className="w">{minifyAddress(winner.wallet)}</div>
               console.log(winner.wallet);
               <div className="w">{winner.score}</div>
-              <div className="w">
-                {winner.score > winner.goal ? "W" : "L"}
-              </div>
+              <div className="w">{winner.score > winner.goal ? "W" : "L"}</div>
             </div>
           ))}
       </div>
@@ -127,7 +122,8 @@ const RecentScore = (props: LeaderBoardProps) => {
                   month: "long",
                   year: "numeric",
                 })}
-              </div>)}
+              </div>
+            )}
 
             <div className="w-[25%]">{minifyAddress(winner.wallet)}</div>
 

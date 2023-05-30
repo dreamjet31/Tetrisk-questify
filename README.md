@@ -1,9 +1,6 @@
-# astrolus
+# Skillbet-tetrisk
 
-A page template built with astro and tailwindcss using tailus blocks.
-
-![Tailus astro based theme](./public/astrolus-light.png)
-![Tailus astro based dark theme](./public/astrolus-dark.png)
+Questify Web tetris game based on SEI
 
 ## 🚀 Project Structure
 
@@ -16,10 +13,24 @@ Inside of your Astro project, you'll see the following folders and files:
 ├── src/
 │   ├── components/
 │   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
+│   ├── config/
+│   │   └── action.js
+│   ├── data/
+│   │   └── index.tsx
+│   ├── hooks/
+│   │   └── useInterval.js
+│   │   └── useWindowDimensions.js
+│   ├── pages/
+│   │   ├── Home/
+│   │   |   └── index.tsx
+│   │   ├── StartGame/
+|   │   |   └── index.tsx
+│   │   ├── Tetris/
+|   │   |   └── index.tsx
+│   ├── redux/
+│   │   ├── slices/
+|   │   |   └── index.tsx
+|   |   ├── store.ts
 └── package.json
 ```
 
@@ -33,16 +44,15 @@ Any static assets, like images, can be placed in the `public/` directory.
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                | Action                                             |
-| :--------------------- | :------------------------------------------------- |
-| `npm install`          | Installs dependencies                              |
-| `npm run dev`          | Starts local dev server at `localhost:3000`        |
-| `npm run build`        | Build your production site to `./dist/`            |
-| `npm run preview`      | Preview your build locally, before deploying       |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro preview` |
-| `npm run astro --help` | Get help using the Astro CLI                       |
+| Command           | Action                                       |
+| :---------------- | :------------------------------------------- |
+| `npm install`     | Installs dependencies                        |
+| `npm run dev`     | Starts local dev server at `localhost:3000`  |
+| `npm run build`   | Build your production site to `./dist/`      |
+| `npm run preview` | Preview your build locally, before deploying |
 
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
 # skillbet

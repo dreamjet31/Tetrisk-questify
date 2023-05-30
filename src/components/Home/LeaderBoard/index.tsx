@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { minifyAddress } from "../../../utils";
-import avatar from "/images/avatar.svg"
+import avatar from "/images/avatar.svg";
 
 export interface LeaderBoardProps {
   simple: boolean;
@@ -13,7 +13,6 @@ function calculateInterval(updatedTime) {
   const updatedTime1 = new Date(updatedTime);
   // Calculate the difference in milliseconds
   const diffMs = now.getTime() - updatedTime1.getTime();
-  // console.log(diffMs);
 
   // Convert milliseconds to days, hours, minutes, and seconds
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -24,16 +23,17 @@ function calculateInterval(updatedTime) {
   const diffSeconds = Math.floor((diffMs % (1000 * 60)) / 1000);
 
   // Format the result as a string
-  const beforeTime = `${diffDays === 0 ? "" : diffDays + "d,"} ${diffHours === 0 ? "" : diffHours + "h,"
-    }  ${diffMinutes === 0 ? "" : diffMinutes + "m,"}  ${diffSeconds === 0 ? "" : diffSeconds + "s"
-    } `;
+  const beforeTime = `${diffDays === 0 ? "" : diffDays + "d,"} ${
+    diffHours === 0 ? "" : diffHours + "h,"
+  }  ${diffMinutes === 0 ? "" : diffMinutes + "m,"}  ${
+    diffSeconds === 0 ? "" : diffSeconds + "s"
+  } `;
 
   return beforeTime;
 }
 
 const LeaderBoard = (props: LeaderBoardProps) => {
-
-  const isSmallDevice = window.matchMedia('(max-width: 600px)').matches;
+  const isSmallDevice = window.matchMedia("(max-width: 600px)").matches;
 
   const { winners } = useSelector((state: any) => ({
     winners: state.tetris.winners,
@@ -43,7 +43,6 @@ const LeaderBoard = (props: LeaderBoardProps) => {
 
   useEffect(() => {
     let tempWinners = Object.assign({ ...winners });
-    console.log(tempWinners);
     if (
       Object.keys(tempWinners) &&
       Object.keys(tempWinners).indexOf("showInfo") > -1 &&
@@ -64,7 +63,6 @@ const LeaderBoard = (props: LeaderBoardProps) => {
         }
         return { ...winner, rank: idx + 1, rankRange };
       });
-      console.log(sorted);
       setSortedWinners(sorted);
     }
   }, [winners]);
@@ -104,7 +102,6 @@ const LeaderBoard = (props: LeaderBoardProps) => {
             className="flex gap-8 cursor-pointer py-[20px] text-black lg:text-[14px] md:text-[14px] sm:text-[12px] xs:text-[12px]
             px-[30px] bg-white border border-[#E6E6E6] items-center justify-between"
           >
-
             {!isSmallDevice && (
               <div className="w-[40px] h-[40px] xs:hidden">
                 <img src={avatar} />{" "}

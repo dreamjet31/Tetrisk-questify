@@ -12,6 +12,7 @@ import {
   setConnectionState,
   setConfLevel,
   setSkillLevel,
+  setBeatScore,
 } from "../../redux/slices/tetrisSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -246,9 +247,9 @@ const StartGame = () => {
     level: state.tetris.skillLevel,
   }));
 
-  useEffect(() => {
-    localStorage.setItem("betAmount", confLevel);
-  }, [betAmount]);
+  // useEffect(() => {
+  //   localStorage.setItem("betAmount", confLevel);
+  // }, [betAmount]);
 
   const { connectedWallet, offlineSigner, accounts } = useWallet();
 
@@ -278,18 +279,23 @@ const StartGame = () => {
       });
       console.log("ssdfd", result.data.data.totalBalance);
       dispatch(setMyBalance({ balance: result.data.data.totalBalance }));
+      // dispatch(
+      //   setBeatScore({ beatScore: result.data.newTetris.goal.toString() })
+      // );
     }
   };
 
   const sendToken = async (amount: number) => {
-    if (!signingClient || !accounts) {
-      console.log("Wallet is not connected");
-      return;
-    }
-    if (amount > balance) {
-      toast.warn("Check your balance");
-      return;
-    }
+    // ***
+    // if (!signingClient || !accounts) {
+    //   console.log("Wallet is not connected");
+    //   return;
+    // }
+    // if (amount > balance) {
+    //   toast.warn("Check your balance");
+    //   return;
+    // }
+    // ***
     if (!connected) toast.warn("Wait a few seconds ...");
     setSending(true);
     // const fee = calculateFee(150000, GasPrice.fromString("3750usei"));
@@ -327,20 +333,24 @@ const StartGame = () => {
       // } else {
       //   throw new Error();
       // }
-      console.log("dssdf", level);
+      console.log("Now creating Tetris", level);
 
       try {
         const result = await apiCaller.post("tetrises/createTetris", {
-          wallet: accounts[0].address,
+          // wallet: accounts[0].address,
+          wallet: "sei1qu2vzlk4nj8vcu5zjczr4xmzdenu027fku4q4d",
           txHash: "useless",
           amount: amount,
           level,
         });
-        console.log("sdfsadfsd", result.data);
+        console.log("❤️ Data", result.data.newTetris);
         localStorage.setItem("tetrisId", result.data.newTetris._id);
-        localStorage.setItem(
-          "beatScore",
-          result.data.newTetris.goal.toString()
+
+        // const { beatScore } = useSelector((state: any) => ({
+        //   beatScore: result.data.newTetris.goal.toString(),
+        // }));
+        dispatch(
+          setBeatScore({ beatScore: result.data.newTetris.goal.toString() })
         );
       } catch (err: any) {
         // if (err.response.data.message == "Rate limit") {
@@ -370,9 +380,9 @@ const StartGame = () => {
     initSocket();
   }, []);
 
-  useEffect(() => {
-    getBalance();
-  }, [queryClient, accounts]);
+  // useEffect(() => {
+  //   getBalance();
+  // }, [queryClient, accounts]);
 
   const initSocket = () => {
     // This part is main for socket.
@@ -439,11 +449,6 @@ const StartGame = () => {
         backgroundPosition: "top",
       }}
     >
-      <ToastContainer
-        style={{ fontSize: "14px" }}
-        autoClose={2000}
-        hideProgressBar={true}
-      />
       <div className="flex flex-col justify-center">
         <div
           className="flex flex-row justify-center"

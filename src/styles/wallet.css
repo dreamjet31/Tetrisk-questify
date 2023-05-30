@@ -99,15 +99,34 @@
   margin-top: -20px;
 }
 
+.beautiful {
+  animation: change 1s infinite;
+  cursor: pointer;
+  font-weight: bold;
+  text-shadow: 0px 1px 2px black;
+}
+
 @keyframes bounce {
   0% {
-    margin-top: -16px;
+    margin-top: -14px;
   }
   50% {
-    margin-top: -24px;
+    margin-top: -20px;
   }
   100% {
-    margin-top: -16px;
+    margin-top: -14px;
+  }
+}
+
+@keyframes change {
+  0% {
+    color:yellow
+  }
+  50% {
+    color:aqua;
+  }
+  100% {
+    color:yellow;
   }
 }
 
@@ -146,4 +165,40 @@
   font-weight: "lighter";
   margin-top: "24px";
   margin-bottom: "28px";
+}
+
+.yellow-btn{
+  text-align: center;
+  background-color: #fcd23c;
+  border: 2px solid black;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: BungeeSpice-Regular;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: flex;
+  padding: 16px 32px 16px 32px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.message{
+
+    width: 60%;
+    height: 100px;
+    padding: 0.5em;
+    background-color: transparent;
+    margin: 0 auto;
+    position: relative;
+    @media screen and (min-width: 960px) {
+      background-image: url(/images/messageBox.svg);
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+    }
+
+    /* Style for small devices */
+    @media screen and (max-width: 960px) {
+      background-color: transparent;
+    }
+
 }
