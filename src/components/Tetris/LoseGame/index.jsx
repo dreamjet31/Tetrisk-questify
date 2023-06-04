@@ -160,7 +160,9 @@ const LoseGame = ({
               className="beautiful flex w-[300px] text-[16px] items-center justify-center"
               onClick={() => {
                 dispatch(setQuestState({ questState: false }));
-                window.open("https://all-questify-app.web.app/quests");
+                window.open(
+                  "https://questify-app-dashboard-testing.web.app/quests"
+                );
               }}
             >
               You achieved new quests!

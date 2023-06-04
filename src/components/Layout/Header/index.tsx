@@ -30,6 +30,10 @@ const modalStyle = {
 };
 
 const Header = () => {
+  const isSmallDevice = window.matchMedia(
+    "(max-width: 600px) or (max-height:420px)"
+  ).matches;
+
   const dispatch = useDispatch();
   const { supportedWallets, connect, disconnect, installedWallets } =
     useContext(SeiWalletContext);
@@ -200,7 +204,7 @@ const Header = () => {
           </div>
         )}
 
-        {
+        {isSmallDevice ? (
           <div className="flex justify-end">
             <div
               className="wallet-adapter-button flex justify-end  my-[15px]  mr-[25px]"
@@ -209,7 +213,97 @@ const Header = () => {
               <img src="images/threeDots.png" className="w-[25px]" />
             </div>
           </div>
-        }
+        ) : (
+          <div className="flex flex-row justify-end">
+            {connectedWallet == ("keplr" as WalletWindowKey) && (
+              <div
+                className="wallet-adapter-button flex justify-end items-center my-[15px] "
+                onClick={() => {}}
+              >
+                <div className="flex flex-row">
+                  <p>&nbsp;{Math.floor(Number(balance) * 10000) / 10000}</p>
+                  <img
+                    src="/images/logo2.png"
+                    className="mx-[6px] w-[18px] h-[18px]"
+                  ></img>
+                </div>
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={modalStyle}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                      sx={{ textAlign: "center" }}
+                    >
+                      Deposite
+                    </Typography>
+                    <div className="flex flex-row mt-3">
+                      <TextField
+                        id="outlined-number"
+                        label="Deposite amount"
+                        type="number"
+                        size="small"
+                        value={betAmount}
+                        onChange={(e) => {
+                          try {
+                            setBetAmount(Number(e.target.value));
+                          } catch (err) {
+                            toast.warn("Input correct amount");
+                          }
+                        }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                      />
+                      <div className="wallet-adapter-button flex justify-end ml-3 bg-[#fcd23c]">
+                        Deposite
+                      </div>
+                    </div>
+                  </Box>
+                </Modal>
+              </div>
+            )}
+
+            <div className="wallet-adapter-button flex justify-end items-center my-[15px]  mx-[25px]">
+              {connectedWallet != ("keplr" as WalletWindowKey) ? (
+                <div
+                  className="flex flex-row"
+                  onClick={async () => {
+                    if (!window.keplr) {
+                      toast.warn("Please install keplr extension");
+                    } else {
+                      connect("keplr");
+                    }
+                  }}
+                >
+                  <img src="/images/SEI.svg"></img>
+                  <p>&nbsp;Connect Wallet</p>
+                </div>
+              ) : (
+                <div
+                  className="flex flex-row"
+                  onClick={() => {
+                    disconnect();
+                    dispatch(setConnectionState({ state: !connectionState }));
+                  }}
+                >
+                  <img src="/images/SEI.svg"></img>
+                  <p>
+                    &nbsp;{" "}
+                    {myWalletAddress.substring(0, 6) +
+                      "..." +
+                      myAddress.substring(myAddress.length - 3)}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
