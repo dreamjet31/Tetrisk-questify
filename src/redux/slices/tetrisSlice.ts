@@ -8,6 +8,7 @@ export interface TetrisState {
     myWalletAddress: string;
     balance: number,
     beatScore:number,
+    questState:boolean,
 }
 
 const initialState: TetrisState = {
@@ -17,7 +18,8 @@ const initialState: TetrisState = {
     confLevel: 0,
     myWalletAddress:"",
     balance: 0,
-    beatScore: 0
+    beatScore: 0,
+    questState: false,
 }
 
 export const tetrisSlice = createSlice({
@@ -46,6 +48,11 @@ export const tetrisSlice = createSlice({
         setBeatScore: (state, action: PayloadAction<any>) => {
             state.beatScore = action.payload.beatScore;
         },
+        setQuestState: (state, action: PayloadAction<any>) => {
+            state.questState = action.payload.questState;
+        },
+
+
     },
 })
 
@@ -56,7 +63,8 @@ export const {
   setSkillLevel,
   setMyWalletAddress,
   setMyBalance,
-  setBeatScore
+  setBeatScore,
+  setQuestState
 } = tetrisSlice.actions
 
 export default tetrisSlice.reducer

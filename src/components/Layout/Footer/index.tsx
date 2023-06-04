@@ -21,9 +21,7 @@ const Footer = () => {
       /> */}
       <div
         className="wallet-adapter-button fixed left-4 bottom-4 align-text-center flex flex-row"
-        onClick={() => {
-          window.location.href = "https://questify-testing.web.app";
-        }}
+        onClick={() => window.open("https://all-questify-app.web.app")}
       >
         <img src="images/Backward.png" style={{ width: "25px" }}></img>
         <p></p>

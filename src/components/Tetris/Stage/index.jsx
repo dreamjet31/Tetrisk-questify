@@ -10,7 +10,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import moreIcon from "/images/more.svg";
 import plusIcon from "/images/plus.svg";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { apiCaller } from "../../../utils/fetcher";
@@ -22,6 +22,8 @@ import {
   useSigningClient,
   setSkillLevel,
 } from "@sei-js/react";
+import { setQuestState } from "../../../redux/slices/tetrisSlice";
+
 import { toast } from "react-toastify";
 
 const progressbarStyles = {
@@ -311,6 +313,10 @@ const Stage = ({
   const { beatScore } = useSelector((state) => ({
     beatScore: state.tetris.beatScore,
   }));
+  const dispatch = useDispatch();
+  const { questState } = useSelector((state) => ({
+    questState: state.tetris.questState,
+  }));
 
   // Orientation
   useEffect(() => {
@@ -353,13 +359,6 @@ const Stage = ({
       });
 
       const logCode = crypto.AES.encrypt(json, key).toString();
-      // const logCode = {
-      //   score: 4536,
-      //   winStatus: true,
-      //   level: 1,
-      //   timestamp: new Date(),
-      //   hours: 0.1,
-      // };
 
       apiCaller
         .post("tetrises/updateMyFlag", {
@@ -369,19 +368,23 @@ const Stage = ({
         .then((result) => {
           setFlag(result.data.existingUser.tetris.count);
           setShow(true);
-          console.log("", result.data.existingUser);
-          setQuest(
-            result.data.existingUser.tetris.allQuests.length ===
-              result.data.existingUser.tetris.receivedQuests.length &&
-              result.data.existingUser.tetris.allQuests.every(
-                (value, index) =>
-                  value ===
-                  result.data.existingUser.tetris.receivedQuests[index]
-              )
-              ? true
-              : false
+          console.log("😁", result.data.existingUser);
+          dispatch(
+            setQuestState({
+              questState:
+                result.data.existingUser.tetris.allQuests.length ===
+                  result.data.existingUser.tetris.receivedQuests.length &&
+                result.data.existingUser.tetris.allQuests.every(
+                  (value, index) =>
+                    value ===
+                    result.data.existingUser.tetris.receivedQuests[index]
+                )
+                  ? false
+                  : true,
+            })
           );
-          console.log(quest);
+
+          console.log("❤️", questState);
         });
     }
   }, [lose]);
@@ -613,7 +616,7 @@ const Stage = ({
           pixelSize={pixelSize}
           theme3d={theme3d}
           wallet={accounts[0].address}
-          isQuest={!quest}
+          isQuest={quest}
         ></WinGame>
       )}
 
@@ -626,7 +629,7 @@ const Stage = ({
           pixelSize={pixelSize}
           theme3d={theme3d}
           wallet={accounts[0].address}
-          isQuest={!quest}
+          isQuest={quest}
         ></LoseGame>
       )}
 

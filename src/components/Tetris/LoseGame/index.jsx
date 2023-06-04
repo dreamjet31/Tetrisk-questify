@@ -1,11 +1,12 @@
 import React, { useEffect, useContext } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ProgressBar from "../Game/ProgressBar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { apiCaller } from "../../../utils/fetcher";
+import { setQuestState } from "../../../redux/slices/tetrisSlice";
 
 const isSmallDevice = window.matchMedia(
   "(max-width: 600px) or (max-height:420px)"
@@ -63,6 +64,12 @@ const LoseGame = ({
   const { confLevel } = useSelector((state) => ({
     confLevel: state.tetris.confLevel,
   }));
+  const { questState } = useSelector((state) => ({
+    questState: state.tetris.questState,
+  }));
+  console.log("😂❤️👍", questState);
+
+  const dispatch = useDispatch();
 
   const quitGame = () => {
     navigate("/");
@@ -84,7 +91,7 @@ const LoseGame = ({
     // console.log(confLevel);
   }, [confLevel]);
 
-  console.log("🙌isQuests", isQuest);
+  // console.log("🙌isQuests", isQuest);
 
   return (
     <CenterOverlay className="flex flex-col">
@@ -148,11 +155,15 @@ const LoseGame = ({
           <div className="flex mt-3 mb-3 w-[300px]">
             <ProgressBar currentStep={flag} myfunc={resetMyFlag} />
           </div>
-          {isQuest && (
-            <div className="beautiful flex w-[300px] text-[16px] items-center justify-center">
-              <a href="https://app-questify.web.app/" target="_blank">
-                {" You achieved new quests! "}
-              </a>
+          {questState && (
+            <div
+              className="beautiful flex w-[300px] text-[16px] items-center justify-center"
+              onClick={() => {
+                dispatch(setQuestState({ questState: false }));
+                window.open("https://all-questify-app.web.app/quests");
+              }}
+            >
+              You achieved new quests!
             </div>
           )}
         </ContainerLose>
