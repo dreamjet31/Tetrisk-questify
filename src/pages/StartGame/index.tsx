@@ -274,7 +274,7 @@ const StartGame = () => {
   const getMyInfo = async (wallet: string) => {
     console.log("here");
     if (accounts && accounts.length) {
-      var result = await apiCaller.post("tetrises/getMyInfo", {
+      var result = await apiCaller.post("users/getMyInfo", {
         wallet,
       });
       console.log("ssdfd", result.data.data.totalBalance);
@@ -337,8 +337,7 @@ const StartGame = () => {
 
       try {
         const result = await apiCaller.post("tetrises/createTetris", {
-          // wallet: accounts[0].address,
-          wallet: "sei1qu2vzlk4nj8vcu5zjczr4xmzdenu027fku4q4d",
+          wallet: accounts[0].address,
           txHash: "useless",
           amount: amount,
           level,

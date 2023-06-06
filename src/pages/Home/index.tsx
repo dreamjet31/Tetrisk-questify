@@ -61,7 +61,7 @@ const Home = () => {
 
   const getMyInfo = async (wallet: string) => {
     if (accounts && accounts.length) {
-      var result = await apiCaller.post("tetrises/getMyInfo", {
+      var result = await apiCaller.post("users/getMyInfo", {
         wallet,
       });
       dispatch(setMyBalance({ balance: result.data.data.totalBalance }));

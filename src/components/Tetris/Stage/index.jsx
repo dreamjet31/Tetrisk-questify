@@ -372,9 +372,9 @@ const Stage = ({
           dispatch(
             setQuestState({
               questState:
-                result.data.existingUser.tetris.allQuests.length ===
+                result.data.existingUser.tetris.trackedQuests.length ===
                   result.data.existingUser.tetris.receivedQuests.length &&
-                result.data.existingUser.tetris.allQuests.every(
+                result.data.existingUser.tetris.trackedQuests.every(
                   (value, index) =>
                     value ===
                     result.data.existingUser.tetris.receivedQuests[index]
