@@ -350,20 +350,10 @@ const Stage = ({
   useEffect(() => {
     if (lose && accounts && accounts.length) {
       const wallet = accounts[0].address;
-      const key = "my_secret_key_for_questify";
-      const json = JSON.stringify({
-        score: status.score,
-        result: status.score >= Number(beatScore),
-        level: skillLevel,
-        timestamp: new Date(),
-      });
-
-      const logCode = crypto.AES.encrypt(json, key).toString();
 
       apiCaller
-        .post("tetrises/updateMyFlag", {
+        .post("tetrises/fetchQuests", {
           wallet,
-          logCode,
         })
         .then((result) => {
           setFlag(result.data.existingUser.tetris.count);

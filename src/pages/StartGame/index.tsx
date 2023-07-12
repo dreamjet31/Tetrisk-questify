@@ -370,7 +370,7 @@ const StartGame = () => {
   };
 
   const fetchLeaderboard = async () => {
-    var result = await apiCaller.get("tetrises/fetchLeaderboard");
+    var result = await apiCaller.get("users/fetchLeaderboard");
     dispatch(setLeaderboard({ result: result.data.data }));
   };
 

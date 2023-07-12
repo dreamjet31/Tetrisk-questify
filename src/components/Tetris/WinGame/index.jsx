@@ -76,9 +76,9 @@ const WinGame = ({
     navigate("/");
   };
 
-  const resetMyFlag = async () => {
-    console.log("resetmyflag is called!");
-    var result = await apiCaller.post("tetrises/resetMyFlag", {
+  const claimChest = async () => {
+    console.log("claimChest is called!");
+    var result = await apiCaller.post("tetrises/claimChest", {
       wallet,
     });
     console.log("🪙", result.data);
@@ -160,7 +160,7 @@ const WinGame = ({
             OK
           </div>
           <div className="flex mt-3 mb-3 w-[300px]">
-            <ProgressBar currentStep={flag} myfunc={resetMyFlag} />
+            <ProgressBar currentStep={flag} myfunc={claimChest} />
           </div>
           {questState && (
             <div
