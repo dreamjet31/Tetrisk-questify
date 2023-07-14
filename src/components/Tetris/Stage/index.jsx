@@ -352,22 +352,22 @@ const Stage = ({
       const wallet = accounts[0].address;
 
       apiCaller
-        .post("tetrises/fetchQuests", {
+        .post("users/getMyInfo", {
           wallet,
         })
         .then((result) => {
-          setFlag(result.data.existingUser.tetris.count);
+          setFlag(result.data.data.playCount.tetris);
           setShow(true);
-          console.log("😁", result.data.existingUser);
+          console.log("😁", result.data.data);
           dispatch(
             setQuestState({
               questState:
-                result.data.existingUser.tetris.trackedQuests.length ===
-                  result.data.existingUser.tetris.receivedQuests.length &&
-                result.data.existingUser.tetris.trackedQuests.every(
+                result.data.data.achievedQuests.tetris.length ===
+                  result.data.data.claimedQuests.tetris.length &&
+                result.data.data.achievedQuests.tetris.every(
                   (value, index) =>
                     value ===
-                    result.data.existingUser.tetris.receivedQuests[index]
+                    result.data.data.claimedQuests.tetris[index]
                 )
                   ? false
                   : true,
