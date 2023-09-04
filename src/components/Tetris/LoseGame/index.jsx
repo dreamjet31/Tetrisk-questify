@@ -80,9 +80,10 @@ const LoseGame = ({
     var result = await apiCaller.post("tetrises/claimChest", {
       wallet,
     });
+    console.log("🪪", result.data)
     // console.log("🪙", result.data);
     if (result.data.boost)
-      toast.info(`You got ${result.data.boost} balance for reward!`);
+      toast.info(`You got QST stars for reward! Check it now`);
     else toast.info("You are unlucky at this time. No reward!");
     navigate("/");
   };
@@ -155,19 +156,19 @@ const LoseGame = ({
           <div className="flex mt-3 mb-3 w-[300px]">
             <ProgressBar currentStep={flag} myfunc={claimChest} />
           </div>
-          {questState && (
+          {/* {questState && (
             <div
               className="beautiful flex w-[300px] text-[16px] items-center justify-center"
               onClick={() => {
                 dispatch(setQuestState({ questState: false }));
                 window.open(
-                  "https://questify-app-dashboard-testing.web.app/quests"
+                  "https://app.questify.gg/quests"
                 );
               }}
             >
               You achieved new quests!
             </div>
-          )}
+          )} */}
         </ContainerLose>
       </ContainerWrapper>
     </CenterOverlay>

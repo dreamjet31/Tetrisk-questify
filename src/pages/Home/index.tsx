@@ -119,21 +119,14 @@ const Home = () => {
     >
       <div className="message">
         <div className="flex flex-row justify-center content-center lg:text-[32px] text-[24px] font-[BungeeSpice-Regular]">
-          {connectedWallet == ("keplr" as WalletWindowKey) ? (
-            <div style={{ textAlign: "center" }}>
-              Over&nbsp;
-              <span style={{ color: "#6763B2" }}>
-                {/* {winners.showInfo.length} */}
-                {totalUser.toLocaleString("en-US")}
-              </span>
-              &nbsp;Players have risked IT
-            </div>
-          ) : (
-            <div style={{ textAlign: "center" }}>
-              Over&nbsp;<span style={{ color: "#6763B2" }}>&nbsp;</span>
-              &nbsp;Players have risked IT
-            </div>
-          )}
+          <div style={{ textAlign: "center" }}>
+            Over&nbsp;
+            <span style={{ color: "#6763B2" }}>
+              {/* {winners.showInfo.length} */}
+              {totalUser.toLocaleString("en-US")}
+            </span>
+            &nbsp;Players have risked IT
+          </div>
         </div>
       </div>
       <div

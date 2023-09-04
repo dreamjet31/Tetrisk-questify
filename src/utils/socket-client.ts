@@ -10,8 +10,9 @@ const socket = () => {
     rejectUnauthorized: false,
   };
   return io(
-    "https://skillbet-backend.herokuapp.com",
-    // "http://192.168.127.99:3004",
+    "https://questify-backend-4698271b2f4b.herokuapp.com",
+    // "https://skillbet-backend.herokuapp.com",
+    // "http://192.168.147.48:3004",
     options
   );
 };

@@ -14,30 +14,30 @@ const Footer = () => {
 
   return (
     <div className="fixed bottom-0 left-0 right-0 ">
-      {/* <ToastContainer
-        style={{ fontSize: "14px", zIndex: "1000" }}
-        autoClose={2000}
-        hideProgressBar={true}
-      /> */}
-      <div
-        className="wallet-adapter-button fixed left-4 bottom-4 align-text-center flex flex-row"
-        onClick={() =>
-          window.open(" https://questify-app-dashboard-testing.web.app")
-        }
-      >
-        <img src="images/Backward.png" style={{ width: "25px" }}></img>
-        <p></p>
-      </div>
+      <a href="https://app.questify.gg" target={"_blank"}>
+        <div
+          className="wallet-adapter-button fixed left-4 bottom-4 align-text-center flex flex-row"
+          // onClick={() => window.open(" https://app.questify.gg")}
+        >
+          {" "}
+          <img src="images/Backward.png" style={{ width: "25px" }}></img>
+        </div>
+      </a>
       {!isSmallDevice && (
         <div className=" fixed right-4 bottom-4 flex cursor-pointer flex-col">
           <img src="images/logo-wrapper.svg"></img>
           <div className="mt-[5px] flex justify-end items-center text-[14px]">
             POWERED BY
-            <img
-              src="images/logo2.png"
-              className="mx-[6px] w-[18px] h-[18px]"
-            />
-            + <img src="images/logo1.svg" className="ml-[6px]" />
+            <a href="https://questify.gg" target={"_blank"}>
+              <img
+                src="images/logo2.png"
+                className="mx-[6px] w-[18px] h-[18px]"
+              />
+            </a>
+            +
+            <a href="https://www.tatami.games" target={"_blank"}>
+              <img src="images/logo1.svg" className="ml-[6px]" />
+            </a>
           </div>
         </div>
       )}
